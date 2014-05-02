@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2012 The Android Open Source Project
+ * Copyright (c) 2014, NVIDIA CORPORATION.  All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -256,10 +257,15 @@ public class ImageShow extends View implements OnGestureListener,
         mPaint.reset();
         mPaint.setAntiAlias(true);
         mPaint.setFilterBitmap(true);
-        MasterImage.getImage().setImageShowSize(
-                getWidth() - 2*mShadowMargin,
-                getHeight() - 2*mShadowMargin);
-
+        try {
+            MasterImage.getImage().setImageShowSize(
+                    getWidth() - 2*mShadowMargin,
+                    getHeight() - 2*mShadowMargin);
+        }
+        catch(Exception e) {
+            Log.w(LOGTAG,"Got an exception in onDraw()");
+            return ;
+        }
         MasterImage img = MasterImage.getImage();
         // Hide the loading indicator as needed
         if (mActivity.isLoadingVisible() && getFilteredImage() != null) {
